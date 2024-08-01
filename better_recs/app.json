@@ -14,13 +14,15 @@
     },
     "ios": {
       "supportsTablet": true,
+      "package": "com.kab.betterrecs",
       "bundleIdentifier": "com.userchoice.recs"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kab.betterrecs"
     },
     "web": {
       "bundler": "metro",
