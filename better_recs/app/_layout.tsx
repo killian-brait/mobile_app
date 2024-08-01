@@ -29,9 +29,14 @@ const RootLayout = () => {
 
   return (
     <Stack>
-      <Stack.Screen name='index' options={
-        { headerShown: false }
-        }/>
+      {/* Onboarding Screen */}
+      <Stack.Screen name='index' options={{ headerShown: false }}/>
+      {/* Auth Screens: login, signup */}
+      <Stack.Screen name='(auth)' options={{ headerShown: false }}/>
+      {/* Tabs Screens: bookmark, create, home, profile */}
+      <Stack.Screen name='(tabs)' options={{ headerShown: false }}/>
+
+      {/* <Stack.Screen name='/search/[query]' options={{ headerShown: false }}/> */}
     </Stack>
   )
 }
