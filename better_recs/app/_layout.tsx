@@ -3,6 +3,8 @@ import { SplashScreen, Stack } from 'expo-router'
 import { useFonts } from 'expo-font'
 import { useEffect } from 'react';
 
+import GlobalProvider from '@/context/GlobalProvider'
+
 SplashScreen.preventAutoHideAsync(); // prevents splashscreen from autohiding before asset loading is complete
 
 const RootLayout = () => {
@@ -28,16 +30,18 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <Stack>
-      {/* Onboarding Screen */}
-      <Stack.Screen name='index' options={{ headerShown: false }}/>
-      {/* Auth Screens: login, signup */}
-      <Stack.Screen name='(auth)' options={{ headerShown: false }}/>
-      {/* Tabs Screens: bookmark, create, home, profile */}
-      <Stack.Screen name='(tabs)' options={{ headerShown: false }}/>
+    <GlobalProvider>
+      <Stack>
+        {/* Onboarding Screen */}
+        <Stack.Screen name='index' options={{ headerShown: false }}/>
+        {/* Auth Screens: login, signup */}
+        <Stack.Screen name='(auth)' options={{ headerShown: false }}/>
+        {/* Tabs Screens: bookmark, create, home, profile */}
+        <Stack.Screen name='(tabs)' options={{ headerShown: false }}/>
 
-      {/* <Stack.Screen name='/search/[query]' options={{ headerShown: false }}/> */}
-    </Stack>
+        {/* <Stack.Screen name='/search/[query]' options={{ headerShown: false }}/> */}
+      </Stack>
+    </GlobalProvider>
   )
 }
 

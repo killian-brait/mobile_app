@@ -1,4 +1,4 @@
-import { Client, Account, ID, Avatars, Databases } from 'react-native-appwrite';
+import { Client, Account, ID, Avatars, Databases, Query } from 'react-native-appwrite';
 
 export const appwriteConfig = {
     endpoint: 'https://cloud.appwrite.io/v1',
@@ -32,37 +32,69 @@ export const createUser = async (email, password, username) => {
             email,
             password,
             username
-        )
+        );
 
-        if (!newAccount) {
-            throw new Error('Error creating user: newAccount is null');
-        } else {
-            const avatarUrl = avatars.getInitials(username);
+        if (!newAccount) throw new Error('Error registering: newAccount is null');
 
-            await signIn(email, password);
+        await signIn(email, password);
 
-            const newUser = await databases.createDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, ID.unique(), {
-                accountId: newAccount.$id,
-                email,
-                username,
-                avatar: avatarUrl
-            });
+        const avatarUrl = avatars.getInitials(username);
 
-            return newUser;
-        }
+        console.log("New account ID: ", newAccount.$id);
+
+        const newUser = await databases.createDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, ID.unique(), 
+        {
+            accountId: newAccount.$id,
+            email,
+            username,
+            avatar: avatarUrl
+        });
+
+        return newUser;
     } catch (error) {
         console.log(error);
-        throw new Error(`Error creating user: ${error}`);
+        throw new Error(`Error registering: ${error}`);
     }
 }
 
-export async function signIn(email, password) {
+export const signIn = async (email, password) => {
     try {
+        const sessions = await account.getSession('current');
+
+        // Check if user already has an active session
+        if (sessions) {
+            console.log(`${email} already has an active session. Sessions: ${sessions.userId}`);
+            return;
+        }
+
+        // Create new session if none exists
         const session = await account.createEmailPasswordSession(email, password);
         return session;
     } catch (error) {
         console.log(error);
         throw new Error(`Error signing in: ${error}`);
+    }
+}
+
+export const getCurrentUser = async () => {
+    try {
+        const currentAccount = await account.get();
+
+        if (!currentAccount) throw Error;
+    
+        // BUG FIX: use listDocuments instead of getDocument since
+        // get document requires the document ID
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal('accountId', currentAccount.$id)]
+        );
+
+        if (!currentUser) throw Error;
+
+        return currentUser.documents[0]; // Only need one user
+    } catch (error) {
+        console.log("Error getting current user in function: ", error);
     }
 }
 

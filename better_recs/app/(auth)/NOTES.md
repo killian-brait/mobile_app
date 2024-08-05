@@ -13,3 +13,7 @@ for this, struggling to find other uses for CoPilot.
 
 Still struggling to fully understand this, but it appears that routing is as simple as creating a stack with all the main screens
 in the app and (....) folders to hold layouts for more complex screens.
+
+## Best Way to wrap ALL screens w/ a Provider
+
+Wrap the layout with the Provider, the rootLayout is the main layout so any provider wrapped around it will apply to all screens.
