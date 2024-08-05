@@ -17,3 +17,7 @@ in the app and (....) folders to hold layouts for more complex screens.
 ## Best Way to wrap ALL screens w/ a Provider
 
 Wrap the layout with the Provider, the rootLayout is the main layout so any provider wrapped around it will apply to all screens.
+
+## ScrollView vs. Flatlist
+
+ScrollView doesn't support vertical & horizontal scrolling at the same time, Flatlist does. Flatlist may also be better performant. Special React-Native error prevents two Flatlists with horizontal and vertical within a ScrollView.
