@@ -21,3 +21,7 @@ Wrap the layout with the Provider, the rootLayout is the main layout so any prov
 ## ScrollView vs. Flatlist
 
 ScrollView doesn't support vertical & horizontal scrolling at the same time, Flatlist does. Flatlist may also be better performant. Special React-Native error prevents two Flatlists with horizontal and vertical within a ScrollView.
+
+## Async functions within useEffect
+
+You CANNOT make useEffect async, therefore you can't use async code directly within a useEffect. You can create an async function within useEffect and call it immediately.

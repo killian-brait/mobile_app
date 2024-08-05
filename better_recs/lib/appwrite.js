@@ -10,6 +10,16 @@ export const appwriteConfig = {
     storageId: '66aaf48d003101f63721'
 }
 
+const {
+    endpoint,
+    platform,
+    projectId,
+    databaseId,
+    userCollectionId,
+    videoCollectionId,
+    storageId
+} = appwriteConfig;
+
 // Init your React Native SDK
 const client = new Client();
 
@@ -40,7 +50,7 @@ export const createUser = async (email, password, username) => {
 
         const avatarUrl = avatars.getInitials(username);
 
-        console.log("New account ID: ", newAccount.$id);
+        // console.log("New account ID: ", newAccount.$id);
 
         const newUser = await databases.createDocument(appwriteConfig.databaseId, appwriteConfig.userCollectionId, ID.unique(), 
         {
@@ -98,4 +108,15 @@ export const getCurrentUser = async () => {
     }
 }
 
+export const getAllPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            databaseId,
+            videoCollectionId
+        );
 
+        return posts.documents;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
