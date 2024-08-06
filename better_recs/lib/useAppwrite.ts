@@ -7,29 +7,31 @@ const useAppwrite = (fn: () => Promise<any>) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
+  const fetchData = async () => {
+    setIsLoading(true);
 
-      try {
-        const response = await fn();
+    try {
+      const response = await fn();
 
-        setData(response);
-      } catch (error: Error | unknown) {
-        if (error instanceof Error) {
-          Alert.alert(error.message);
-        } else {
-          Alert.alert(String(error));
-        }
-      } finally {
-        setIsLoading(false); // Done fetching
+      setData(response);
+    } catch (error: Error | unknown) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      } else {
+        Alert.alert(String(error));
       }
-    };
+    } finally {
+      setIsLoading(false); // Done fetching
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
-  return { data };
+  const refetch = () => fetchData();
+
+  return { data, isLoading, refetch };
 };
 
 export default useAppwrite;

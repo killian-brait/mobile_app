@@ -34,7 +34,8 @@ const account = new Account(client);
 const avatars = new Avatars(client);
 const databases = new Databases(client);
 
-export const createUser = async (email, password, username) => {
+export const createUser = async (email:string, password:string, username:string
+) => {
     // Register User
     try {
         const newAccount = await account.create(
@@ -67,7 +68,7 @@ export const createUser = async (email, password, username) => {
     }
 }
 
-export const signIn = async (email, password) => {
+export const signIn = async (email:string, password:string) => {
     try {
         const sessions = await account.getSession('current');
 
@@ -116,7 +117,30 @@ export const getAllPosts = async () => {
         );
 
         return posts.documents;
-    } catch (error) {
-        throw new Error(error);
-    }
+    } catch (error: Error | unknown) {
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        } else {
+          throw new Error(String(error));
+        }
+      }
+}
+
+// for trending section (so maybe rename to getTrendingPosts)
+export const getLatestPosts = async () => {
+    try {
+        const posts = await databases.listDocuments(
+            databaseId,
+            videoCollectionId,
+            [Query.orderDesc('$createdAt', Query.limit(7))]
+        );
+
+        return posts.documents;
+    } catch (error: Error | unknown) {
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        } else {
+          throw new Error(String(error));
+        }
+      }
 }
