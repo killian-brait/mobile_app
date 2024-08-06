@@ -31,7 +31,6 @@ const TrendingItem = ({ activeItem, item } :
 ) => {
   const [play, setPlay] = useState(false)
 
-
   // console.log(activeItem.$id, item.$id)
   return (
     <Animatable.View className='mr-5'
@@ -42,6 +41,15 @@ const TrendingItem = ({ activeItem, item } :
         <Video 
           source={{ uri: item.video }}
           className='w-52 h-72 rounded-[35px] mt-3 bg-white/10'
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay={play}
+          onPlaybackStatusUpdate={(status) => {
+            // ignore following error, it's just a lie
+            if(status.didJustFinish) {
+              setPlay(false)
+            }
+          }}
         />
       ) : (
         <TouchableOpacity className='relative justify-center items-center' activeOpacity={0.7} onPress={() => setPlay(true)}>
